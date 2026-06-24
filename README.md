@@ -65,6 +65,7 @@ PORT=3001
 ```
 
 Catatan:
+
 - Sesuaikan `username`, `password`, `port`, dan nama database dengan PostgreSQL lokal Anda
 - Pada setup saya, port PostgreSQL sempat berjalan di `5433`, jadi silakan cek port aktif masing-masing
 
@@ -167,6 +168,7 @@ Project ini dibantu AI tools sebagai coding assistant untuk mempercepat beberapa
 - drafting sebagian code / boilerplate
 - membantu debugging
 - membantu merapikan dokumentasi teknis
+- membantu dalam membiasakan penulisan pada TypeScript
 
 Tools yang digunakan:
 
@@ -182,6 +184,7 @@ Bagian yang dibantu AI:
 Catatan:
 
 - Requirement analysis, penyesuaian implementasi dengan soal, setup environment, integrasi antar bagian, serta pengujian/verifikasi tetap dilakukan selama proses pengerjaan project
+- Perbantuan yang dilakukan Codex sengaja diketik manual dengan tujuan untuk membiasakan penulisan code dan memahami apa yang dilakukan sistem
 
 ## Catatan tambahan / asumsi teknis
 
