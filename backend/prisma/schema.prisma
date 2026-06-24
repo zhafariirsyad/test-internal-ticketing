@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              Int              @id @default(autoincrement())
+  name            String
+  email           String           @unique
+  password        String
+  role            Role             @default(USER)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  assignedTickets Ticket[]         @relation("TicketAssignee")
+  createdTickets  Ticket[]         @relation("TicketCreator")
+  activities      TicketActivity[]
+  comments        TicketComment[]
+}
+
+model Ticket {
+  id            Int              @id @default(autoincrement())
+  title         String
+  category      TicketCategory
+  priority      TicketPriority
+  description   String
+  attachmentUrl String?
+  status        TicketStatus     @default(OPEN)
+  createdById   Int
+  assignedToId  Int?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  assignedTo    User?            @relation("TicketAssignee", fields: [assignedToId], references: [id])
+  createdBy     User             @relation("TicketCreator", fields: [createdById], references: [id])
+  activities    TicketActivity[]
+  comments      TicketComment[]
+
+  @@index([createdById])
+  @@index([assignedToId])
+  @@index([status])
+  @@index([category])
+}
+
+model TicketComment {
+  id        Int      @id @default(autoincrement())
+  ticketId  Int
+  userId    Int
+  comment   String
+  createdAt DateTime @default(now())
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([ticketId])
+  @@index([userId])
+}
+
+model TicketActivity {
+  id           Int      @id @default(autoincrement())
+  ticketId     Int
+  userId       Int
+  activity     String
+  oldStatus    String?
+  newStatus    String?
+  createdAt    DateTime @default(now())
+  ticket       Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@index([ticketId])
+  @@index([userId])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  DONE
+  REJECTED
+}
+
+enum TicketCategory {
+  HARDWARE
+  SOFTWARE
+  NETWORK
+  ACCOUNT
+  OTHER
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
